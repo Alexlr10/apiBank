@@ -1,8 +1,10 @@
-﻿using apiBank.src.Database.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+using apiBank.src.Database.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace apiBank.src.Database
 {
+    [ExcludeFromCodeCoverage]
     public class BankContext : DbContext
     {
         public BankContext()
@@ -19,12 +21,12 @@ namespace apiBank.src.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string server = Environment.GetEnvironmentVariable("DB_SERVER") ?? "localhost";
-            string database = Environment.GetEnvironmentVariable("DB_DATABASE") ?? "bancodigital";
-            string user = Environment.GetEnvironmentVariable("DB_USER") ?? "root";
-            string password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "91851007";
+            string server = Environment.GetEnvironmentVariable("DB_SERVER");
+            string database = Environment.GetEnvironmentVariable("DB_DATABASE");
+            string user = Environment.GetEnvironmentVariable("DB_USER");
+            string password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-            string connectionString = $"server={server};database={database};user={user};password={password}";
+            string connectionString =  $"Server={server};Database={database};Uid={user};Pwd={password};";
 
             optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("8.0.31-mysql"));
         }

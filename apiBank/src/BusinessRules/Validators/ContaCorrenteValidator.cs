@@ -1,9 +1,11 @@
-﻿using apiBank.src.BusinessRules.Requests;
+﻿using System.Diagnostics.CodeAnalysis;
+using apiBank.src.BusinessRules.Requests;
 using apiBank.src.BusinessRules.Validators.Interfaces;
 using FluentValidation;
 
 namespace apiBank.src.BusinessRules.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class ContaCorrenteValidator : AbstractValidator<UpsertCCRequest>, IContaCorrenteValidator
     {
         public ContaCorrenteValidator()

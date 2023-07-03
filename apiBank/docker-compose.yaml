@@ -4,21 +4,27 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: "api"
     ports:
       - "80:80"
     networks:
       - mynetwork
     env_file:
       - .env
+    depends_on: 
+      - "db"
+
   db:
     image: mysql:8.0
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=91851007
+      - MYSQL_ROOT_PASSWORD=senhausuario
       - MYSQL_DATABASE=bancodigital
-      - MYSQL_PASSWORD=91851007
+      - MYSQL_PASSWORD=senhausuario
       - MYSQL_DB_SERVER=localhost
+    volumes:
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql
     networks:
       - mynetwork
 

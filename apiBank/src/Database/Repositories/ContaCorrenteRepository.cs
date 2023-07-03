@@ -1,8 +1,10 @@
-﻿using apiBank.src.Database.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+using apiBank.src.Database.Domain;
 using apiBank.src.Database.Repositories.Interfaces;
 
 namespace apiBank.src.Database.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public class ContaCorrenteRepository : IContaCorrenteRepository
     {
         private readonly BankContext _db;

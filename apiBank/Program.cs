@@ -1,4 +1,5 @@
-﻿using apiBank.src.Api;
+﻿using System.Diagnostics.CodeAnalysis;
+using apiBank.src.Api;
 using apiBank.src.BusinessRules.Handlers;
 using apiBank.src.BusinessRules.Handlers.Interfaces;
 using apiBank.src.BusinessRules.Validators;
@@ -7,38 +8,49 @@ using apiBank.src.Database;
 using apiBank.src.Database.Repositories;
 using apiBank.src.Database.Repositories.Interfaces;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace apiBank
+{
+    [ExcludeFromCodeCoverage]
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+        
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureServices(services =>
+                    {
+                        services.AddDbContext<BankContext>();
 
-// Adicione o contexto do banco de dados como servico
-builder.Services.AddDbContext<BankContext>();
+                        services.AddGraphQLServer()
+                            .AddQueryType<Query>()
+                            .AddMutationType<Mutation>();
 
-// Add services to the container.
-builder.Services
-    .AddGraphQLServer()
-    .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
+                        services.AddScoped<IContaCorrenteValidator, ContaCorrenteValidator>();
+                        services.AddScoped<IContaCorrenteRepository, ContaCorrenteRepository>();
+                        services.AddScoped<IUpsertCCHandler, UpsertCCHandler>();
+                        services.AddScoped<IGetAllCCHandler, GetAllCCHandler>();
+                        services.AddScoped<IGetByIdCCHandler, GetByIdCCHandler>();
+                        services.AddScoped<IGetByContaVerSaldoHandler, GetByContaVerSaldoHandler>();
+                        services.AddScoped<ISacarContaHandler, SacarContaHandler>();
+                        services.AddScoped<IDepositarContaHandler, DepositarContaHandler>();
 
-// Validators
-builder.Services.AddScoped<IContaCorrenteValidator, ContaCorrenteValidator>();
+                        services.AddEndpointsApiExplorer();
+                        services.AddSwaggerGen();
+                    });
 
-// Repositories
-builder.Services.AddScoped<IContaCorrenteRepository, ContaCorrenteRepository>();
-
-// Business rules
-builder.Services.AddScoped<IUpsertCCHandler, UpsertCCHandler>();
-builder.Services.AddScoped<IGetAllCCHandler, GetAllCCHandler>();
-builder.Services.AddScoped<IGetByIdCCHandler, GetByIdCCHandler>();
-builder.Services.AddScoped<IGetByContaVerSaldoHandler, GetByContaVerSaldoHandler>();
-builder.Services.AddScoped<ISacarContaHandler, SacarContaHandler>();
-builder.Services.AddScoped<IDepositarContaHandler, DepositarContaHandler>();
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-app.MapGraphQL();
-
-app.Run();
+                    webBuilder.Configure(app =>
+                    {
+                        app.UseRouting();
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapGraphQL();
+                        });
+                    });
+                });
+    }
+}

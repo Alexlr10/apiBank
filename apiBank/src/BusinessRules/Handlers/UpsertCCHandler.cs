@@ -49,7 +49,6 @@ namespace apiBank.src.BusinessRules.Handlers
 
             contaEntity.Conta = request.Conta;
             contaEntity.Saldo = request.Saldo;
-
             contaEntity = _repository.Save(contaEntity);
 
             return new UpsertCCResponse
