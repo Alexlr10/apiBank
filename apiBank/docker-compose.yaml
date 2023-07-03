@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - mynetwork
+    env_file:
+      - .env
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=91851007
+      - MYSQL_DATABASE=bancodigital
+      - MYSQL_PASSWORD=91851007
+      - MYSQL_DB_SERVER=localhost
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
