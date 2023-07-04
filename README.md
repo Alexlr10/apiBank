@@ -28,7 +28,7 @@ DB_USER=nome_do_usuario
 DB_PASSWORD=senha_do_usuario
 
 
-# Executando a Aplicação sem Docker e Importando o Banco de Dados
+## Executando a Aplicação sem Docker e Importando o Banco de Dados
 
 Certifique-se de ter o Visual Studio 2022 instalado e o projeto "apiBank" selecionado como o projeto de inicialização.
 
