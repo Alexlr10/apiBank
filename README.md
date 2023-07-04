@@ -19,7 +19,7 @@ As etapas de configuração são as seguintes:
 
 3. No arquivo ".env" na raiz do projeto, atualize as seguintes variáveis de ambiente com as credenciais de acesso ao banco de dados mysql:
 
-DB_SERVER=nome_do_servidor
+DB_SERVER=localhost ( se utilizar docker preencher com ): DB_SERVER=db,3306
 
 DB_DATABASE=bancodigital
 
