@@ -20,8 +20,11 @@ As etapas de configuração são as seguintes:
 3. No arquivo ".env" na raiz do projeto, atualize as seguintes variáveis de ambiente com as credenciais de acesso ao banco de dados mysql:
 
 DB_SERVER=nome_do_servidor
+
 DB_DATABASE=bancodigital
+
 DB_USER=nome_do_usuario
+
 DB_PASSWORD=senha_do_usuario
 
 
@@ -58,6 +61,7 @@ Para executar a aplicação com o Docker, siga as etapas abaixo:
 5. Acesse `https://localhost/graphql` em seu navegador para acessar a interface do GraphQL, onde você pode executar as consultas e mutações disponíveis.
 
 ## Querys e Mutações disponiveis
+```graphql
 mutation UpsertConta {
   upsertConta ( request : {
     conta : "000006",
@@ -140,7 +144,7 @@ query getSaldo {
     }
   }
 }
-
+```
 
 ## Executando os Testes Unitários
 O projeto "TestApiBank" contém os testes unitários para a aplicação. Para executá-los, siga as etapas abaixo:
