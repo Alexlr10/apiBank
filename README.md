@@ -13,11 +13,11 @@ Antes de prosseguir com a execução da aplicação, verifique se você possui o
 ## Configuração
 As etapas de configuração são as seguintes:
 
-1. Clone este repositório para o seu ambiente local: git clone https://github.com/Alexlr10/apiBank.git
+1. Clone este repositório para o seu ambiente local: `git clone https://github.com/Alexlr10/apiBank.git`
 
 2. Abra o projeto "Bank.sln" no Visual Studio 2022.
 
-3. No arquivo ".env" na raiz do projeto, atualize as seguintes variáveis de ambiente com as credenciais de acesso ao banco de dados mysql, caso utilize o docker atualize as variaveis tambem no arquivo docker-compose.yaml:
+3. No arquivo ".env" na raiz do projeto, atualize as seguintes variáveis de ambiente com as credenciais de acesso ao banco de dados mysql:
 
 DB_SERVER=nome_do_servidor
 DB_DATABASE=bancodigital
@@ -25,23 +25,24 @@ DB_USER=nome_do_usuario
 DB_PASSWORD=senha_do_usuario
 
 
-## Importando o Banco de Dados ( Somente se for rodar o projeto sem Docker)
-As etapas para importar o banco de dados são as seguintes:
+# Executando a Aplicação sem Docker e Importando o Banco de Dados
+
+Certifique-se de ter o Visual Studio 2022 instalado e o projeto "apiBank" selecionado como o projeto de inicialização.
 
 1. Abra a ferramenta de interface do MySQL (por exemplo, MySQL Workbench ou DBeaver).
 
-2. Crie um novo banco de dados chamado "bancodigital".
+2. Crie um novo banco de dados chamado "bancodigital" de acordo com as credencias do .env.
 
 3. Importe o arquivo "script.sql" fornecido no repositório para o banco de dados "bancodigital".
 
-## Executando a Aplicação sem Docker
-Para executar a aplicação sem o Docker, siga as etapas abaixo:
+4. Pressione F5 ou clique em "Iniciar Depuração" no Visual Studio 2022 para iniciar a aplicação.
 
-1. No Visual Studio 2022, certifique-se de ter selecionado o projeto "apiBank" como projeto de inicialização.
+5. Acesse `https://localhost:50648/graphql` em seu navegador para acessar a interface do GraphQL, onde você pode executar as consultas e mutações disponíveis.
 
-2. Pressione F5 ou clique em "Iniciar Depuração" para iniciar a aplicação.
+Dessa forma, você primeiro cria o banco de dados e importa o arquivo SQL antes de iniciar a aplicação no Visual Studio 2022. Isso garante que o banco de dados necessário esteja configurado antes que a aplicação seja executada.
 
-3. Acesse `https://localhost:50648/graphql` em seu navegador para acessar a interface do GraphQL, onde você pode executar as consultas e mutações disponíveis.
+Observação: As etapas acima pressupõem que você possui todas as dependências e configurações adequadas para executar o projeto "apiBank" sem o Docker. Certifique-se de seguir as instruções fornecidas com o projeto para configurar corretamente o ambiente de execução.
+
 
 ## Executando a Aplicação com o Docker
 Para executar a aplicação com o Docker, siga as etapas abaixo:
@@ -50,11 +51,96 @@ Para executar a aplicação com o Docker, siga as etapas abaixo:
 
 2. No terminal, navegue até o diretório raiz do projeto.
 
-3. Execute o comando a seguir para criar e executar os containers Docker: `docker-compose up --build`, ele irar fazer o download de todas as dependencias necessarias incluindo o bando de dados.
+3. Execute o comando a seguir para criar e executar os containers Docker: `docker-compose up`, ele irar fazer o download de todas as dependencias necessarias incluindo o bando de dados.
 
 4. Aguarde até que o processo de criação e inicialização dos containers seja concluído.
 
 5. Acesse `https://localhost/graphql` em seu navegador para acessar a interface do GraphQL, onde você pode executar as consultas e mutações disponíveis.
+
+## Querys e Mutações disponiveis
+mutation UpsertConta {
+  upsertConta ( request : {
+    conta : "000006",
+    saldo : 1000
+  }) {
+    payload {
+      id,
+      conta,
+      saldo
+    }
+    errors{
+      errorCode,
+      errorMessage,
+      propertyName,
+      severity
+    }
+  } 
+}
+
+mutation SaqueEmConta {
+  saqueEmConta ( request : {
+    conta : "123456789",
+    valor : 10000
+  }) {
+    payload {
+      conta,
+      saldo
+    }
+    errors{
+      errorCode,
+      errorMessage,
+      propertyName,
+      severity
+    }
+  } 
+}
+
+mutation DepositoEmConta {
+  depositoEmConta( request : {
+    conta : "123456789",
+    valor : 1000
+  }) {
+    payload {
+      conta,
+      saldo
+    }
+    errors{
+      errorCode,
+      errorMessage,
+      propertyName,
+      severity
+    }
+  } 
+}
+
+query getContas {
+  contas {
+    payload{
+      id,
+      conta,
+      saldo
+    }
+  }
+}
+
+query getConta {
+  conta( request: {id : "2a6713c1-8e71-4a0f-bc13-63d199bc6b5a" }) {
+    payload{
+      id,
+      conta,
+      saldo
+    }
+  }
+}
+
+query getSaldo {
+  saldo(request: { conta : "123456789" }) {
+    payload{
+      saldo
+    }
+  }
+}
+
 
 ## Executando os Testes Unitários
 O projeto "TestApiBank" contém os testes unitários para a aplicação. Para executá-los, siga as etapas abaixo:
